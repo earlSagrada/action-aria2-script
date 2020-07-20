@@ -2,7 +2,7 @@
 
 This bash script is for auto-installation of the latest official version of **Aria2 + AriaNg + File Browser + Caddy v2**.
 
-The bundle uses **Caddy v2** as web browser. The configuration file is preseted in the script and is best for bt-download and online watching. With **File Browser**, this can be also used as a cloud storage, depending the quality of your VPS.
+The bundle uses **Caddy v2** as web server. The configuration file is preseted in the script and is best for bt-download and online watching. With **File Browser**, this can be also used as a cloud storage, depending the quality of your VPS.
 
 All the resources of installation are from official links, providing the newest function report.
 
