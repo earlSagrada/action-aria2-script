@@ -9,7 +9,7 @@ All the resources of installation are from official links, providing the newest 
 ## Usage
 Use this line of command to execute the script:
 ```
-bash <(curl -Lk https://raw.githubusercontent.com/earlSagrada/aria2-autoinstall-caddy2-fb/master/install.sh)
+bash <(curl -Lk https://raw.githubusercontent.com/earlSagrada/action-aria2-script/master/install.sh)
 ```
 You'll be asked to entre your domain name and ```rpc-secret``` token.
 
