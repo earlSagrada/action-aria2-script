@@ -13,8 +13,8 @@
 
 # Check if softwares have been installed
 function check_if_installed() {
-	echo '------------------------------------------------------'
 	echo 'Installing newest Aria2 + AriaNg + File Browser + Caddy v2'
+	echo '------------------------------------------------------'
 	echo 'Check if softwares have been installed...'
 
 	if [ -e '/usr/bin/caddy' ]
@@ -64,7 +64,7 @@ function preparation() {
 		# sudo apt upgrade -y
 		sudo apt -y install curl gcc make bzip2 gzip wget unzip zip tar
 	else
-		echo -e '\e[7mThis version of script is dependent on apt!'
+		echo 'This version of script is dependent on apt!'
 	fi
 }
 
