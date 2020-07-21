@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ### Usage: Install latest Aria2 + AriaNg + File Browser + Caddy v2
-### Author: Bojan Fu
+### Author: earlSagrada
 ### Date: 20-07-2020
 
-# TODO: After restart:
+# TODO: After restart you may have to do:
 # Caddy start
 # aria2c -D
 # service filebrowser start
