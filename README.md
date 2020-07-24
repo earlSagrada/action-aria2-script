@@ -17,7 +17,7 @@ bash <(curl -Lk https://raw.githubusercontent.com/earlSagrada/action-aria2-scrip
 You'll be asked to entre your domain name and `rpc-secret` token.
 
 ## System Requirements
-NOTE: This is a newly developed script especially for Ubuntu 20.04 x64 VPS machine. Further adaptation will be added for other environment and usage scenario.
+NOTE: This is a newly developed script especially for **Ubuntu 20.04 x64** VPS machine. Further adaptation will be added for other environment and usage scenario.
 
 ## Features
 * This script assumes you have a VPS and a domain name pointing to the IP address of the VPS. The script will ask for the domain name and write into `~/mysite/Caddyfile`. Caddy will then automatically get a certification and a key for you, which will be stored in `$HOME/.local/share/caddy/certificates/`. The `.crt` and `.key` will be searched and filled into `/etc/aria2/aria2.conf`, which will enable you to access aria2 through HTTPS.
