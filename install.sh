@@ -104,7 +104,7 @@ function install_caddy() {
 function start_caddy() {
 	caddy stop
 	caddy start
-	sleep 10
+	sleep 15
 }
 
 
