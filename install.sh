@@ -1,20 +1,20 @@
 #!/bin/bash
 
 ### Usage: Install latest Aria2 + AriaNg + File Browser + Caddy v2
-### Author: earlSagrada
+### Author: Bojan Fu
 ### Date: 20-07-2020
 
-# TODO: After restart you may have to do:
-# Caddy start
-# aria2c -D
+# TODO: After restart:
+# caddy start
+# aria2c --conf-path=/etc/aria2/aria2.conf -D
 # service filebrowser start
 
 
 
 # Check if softwares have been installed
 function check_if_installed() {
-	echo 'Installing newest Aria2 + AriaNg + File Browser + Caddy v2'
 	echo '------------------------------------------------------'
+	echo 'Installing newest Aria2 + AriaNg + File Browser + Caddy v2'
 	echo 'Check if softwares have been installed...'
 
 	if [ -e '/usr/bin/caddy' ]
@@ -64,7 +64,7 @@ function preparation() {
 		# sudo apt upgrade -y
 		sudo apt -y install curl gcc make bzip2 gzip wget unzip zip tar
 	else
-		echo 'This version of script is dependent on apt!'
+		echo -e '\e[7mThis version of script is dependent on apt!'
 	fi
 }
 
@@ -82,6 +82,7 @@ function install_caddy() {
 	mkdir src
 	#vim Caddyfile
 	read -p 'Please entre the domain name you have registered, whose A/AAAA record points to this IP address: ' domain_name
+	read -p 'Please entre your email address for tls: ' email_address
 	echo 'http://'$domain_name '{
 	        redir https://'$domain_name'
 	}
@@ -92,7 +93,8 @@ function install_caddy() {
 	        file_server browse
 	}
 
-	https://'$domain_name':8081 {
+	https://file.'$domain_name' {
+	        tls 'email_address'
 	        encode zstd gzip
 	        reverse_proxy localhost:8080
 	}' >> Caddyfile
@@ -104,15 +106,16 @@ function install_caddy() {
 function start_caddy() {
 	caddy stop
 	caddy start
-	sleep 15
+	echo 'Please wait for 20 seconds...'
+	sleep 20
 }
 
 
 # Install AriaNg
 function install_ariang() {
 	cd ~/mysite/
-	wget https://github.com/mayswind/AriaNg/releases/download/1.1.6/AriaNg-1.1.6.zip
-	unzip AriaNg-1.1.6.zip -d src
+	wget https://github.com/mayswind/AriaNg/releases/download/1.2.1/AriaNg-1.2.1.zip
+	unzip AriaNg-1.2.1.zip -d src
 	echo 'AriaNg has been installed successfully!'
 }
 
@@ -348,3 +351,13 @@ install_file_browser
 start_file_browser
 report_installation
 
+
+
+#filebrowser config init
+#cd /etc/filebrowser/
+#filebrowser users add bojan shinchan13bojan
+#filebrowser config set --baseurl /root/Download/
+
+#sed -i '/bt-tracker.*/'d ~/.aria2/aria2.conf
+
+#filebrowser users update bojan --perm.admin
