@@ -2,19 +2,19 @@
 
 ### Usage: Install latest Aria2 + AriaNg + File Browser + Caddy v2
 ### Author: Bojan Fu
-### Date: 20-07-2020
+### Date: 28-03-2021
 
 # TODO: After restart:
 # caddy start
 # aria2c --conf-path=/etc/aria2/aria2.conf -D
-# service filebrowser start
+# systemctl start filebrowser
 
 
 
 # Check if softwares have been installed
 function check_if_installed() {
 	echo '------------------------------------------------------'
-	echo 'Installing newest Aria2 + AriaNg + File Browser + Caddy v2'
+	echo 'Installing newest Aria2 + AriaNg + File Browser + Caddy v2...'
 	echo 'Check if softwares have been installed...'
 
 	if [ -e '/usr/bin/caddy' ]
@@ -53,6 +53,8 @@ function check_if_installed() {
 	then
 		exit 1
 	fi
+	printf "\n"
+	sleep 3
 }
 
 
@@ -66,12 +68,16 @@ function preparation() {
 	else
 		echo -e '\e[7mThis version of script is dependent on apt!'
 	fi
+	printf "\n"
+	sleep 3
 }
 
 
 # Install Caddy
 function install_caddy() {
-	echo "deb [trusted=yes] https://apt.fury.io/caddy/ /" | sudo tee -a /etc/apt/sources.list.d/caddy-fury.list
+	sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+	curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo apt-key add -
+	curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee -a /etc/apt/sources.list.d/caddy-stable.list
 	sudo apt update
 	sudo apt install caddy
 
@@ -80,7 +86,7 @@ function install_caddy() {
 	cd mysite
 	touch Caddyfile
 	mkdir src
-	#vim Caddyfile
+	
 	read -p 'Please entre the domain name you have registered, whose A/AAAA record points to this IP address: ' domain_name
 	read -p 'Please entre your email address for tls: ' email_address
 	echo 'http://'$domain_name '{
@@ -99,6 +105,8 @@ function install_caddy() {
 	        reverse_proxy localhost:8080
 	}' >> Caddyfile
 	echo 'Caddy has been installed successfully!'
+	printf "\n"
+	sleep 3
 }
 
 
@@ -107,6 +115,7 @@ function start_caddy() {
 	caddy stop
 	caddy start
 	echo 'Please wait for 20 seconds...'
+	printf "\n"
 	sleep 20
 }
 
@@ -117,6 +126,8 @@ function install_ariang() {
 	wget https://github.com/mayswind/AriaNg/releases/download/1.2.1/AriaNg-1.2.1.zip
 	unzip AriaNg-1.2.1.zip -d src
 	echo 'AriaNg has been installed successfully!'
+	printf "\n"
+	sleep 3
 }
 
 
@@ -134,7 +145,7 @@ function install_aria2() {
 	echo '# 文件的保存路径(可使用绝对路径或相对路径), 默认: 当前启动位置
 	dir=/root/Download/
 	# 启用磁盘缓存, 0为禁用缓存, 需1.16以上版本, 默认:16M
-	#disk-cache=32M
+	# disk-cache=32M
 	# 文件预分配方式, 能有效降低磁盘碎片, 默认:prealloc
 	# 预分配所需时间: none < falloc ? trunc < prealloc
 	# falloc和trunc则需要文件系统和内核支持
@@ -191,7 +202,7 @@ function install_aria2() {
 	# 允许非外部访问, 默认:false
 	rpc-listen-all=true
 	# 事件轮询方式, 取值:[epoll, kqueue, port, poll, select], 不同系统默认值不同
-	#event-poll=select
+	# event-poll=select
 	# RPC监听端口, 端口被占用时可以修改, 默认:6800
 	rpc-listen-port=6800
 	# 设置的RPC授权令牌, v1.18.4新增功能, 取代 --rpc-user 和 --rpc-passwd 选项
@@ -247,28 +258,29 @@ function install_aria2() {
 	echo 'keypath:' $keypath
 	sed -i "s_rpc-private-key=_rpc-private-key=${keypath}_g" /etc/aria2/aria2.conf
 
-	# Append the bt-trackers into conf
-	#echo $'\n' >> ~/.aria2/aria2.conf
-	#echo "bt-tracker=udp://tracker.coppersurfer.tk:6969/announce,udp://tracker.open-internet.nl:6969/announce,udp://exodus.desync.com:6969/announce,udp://tracker.opentrackr.org:1337/announce,udp://tracker.internetwarriors.net:1337/announce,udp://9.rarbg.to:2710/announce,udp://public.popcorn-tracker.org:6969/announce,udp://tracker.vanitycore.co:6969/announce,udp://tracker.mg64.net:6969/announce,udp://mgtracker.org:6969/announce,udp://tracker.tiny-vps.com:6969/announce,udp://tracker.cypherpunks.ru:6969/announce,udp://bt.xxx-tracker.com:2710/announce,udp://tracker.torrent.eu.org:451/announce,udp://thetracker.org:80/announce,udp://retracker.lanta-net.ru:2710/announce,udp://open.stealth.si:80/announce,udp://torr.ws:2710/announce,http://retracker.telecom.by:80/announce,http://tracker.city9x.com:2710/announce" >> ~/.aria2/aria2.conf
-	#echo $'\n' >> ~/.aria2/aria2.conf
 	cd ~
 	wget -O /tmp/trackers_best.txt https://api.xiaoz.org/trackerslist/
 	tracker=$(cat /tmp/trackers_best.txt)
 	tracker="bt-tracker="${tracker}
 	echo $tracker >> /etc/aria2/aria2.conf
-
 	
 	echo 'Aria2 has been installed successfully!'
+	printf "\n"
+	sleep 4
 }
 
 
 # Allow the ports used in aria2c
 function set_free_ports() {
+	echo 'Allowing the ports used in aria2c...'
+	printf "\n"
+
 	sudo ufw allow 6080/tcp
 	sudo ufw allow 6081/tcp
 	sudo ufw allow 6800/tcp
 	sudo ufw allow 6998/tcp
 	sudo ufw allow 51413/tcp
+	sleep 3
 }
 
 
@@ -277,6 +289,8 @@ function start_aria2c() {
 	pkill aria2c
 	aria2c --conf-path=/etc/aria2/aria2.conf -D # Check aria2 conf and run as daemon
 	echo 'Aria2 is now runnning as daemon...'
+	printf "\n"
+	sleep 3
 }
 
 
@@ -312,29 +326,33 @@ function install_file_browser() {
 	WantedBy=multi-user.target' > /lib/systemd/system/filebrowser.service
 	systemctl daemon-reload
 	echo 'File Browser has been installed successfully!'
+	printf "\n"
+	sleep 3
 }
 
 
 # Start File Browser
 function start_file_browser() {
 	echo 'Starting File Browser...'
-	systemctl start filebrowser.service
 	systemctl enable filebrowser.service
+	systemctl start filebrowser.service
+	printf "\n"
+	sleep 3
 }
 
 
 # Report installation and version
 function report_installation() {
+	printf "\n"
 	echo '------------------------------------------------------'
-	echo 'Installed:'
+	echo 'Installation finished!'
 	echo $(caddy version)
 	echo $(aria2c --version)
 	echo $(filebrowser version)
 	echo '------------------------------------------------------'
 	echo 'Use your domain to access the AriaNg and domain:8081 to access File Browser.'
-	echo 'The Aria2 rpc-secret token is:' $secret
-	echo 'The File Browser initial Username is: admin'
-	echo 'Password: admin'
+	echo 'Aria2 rpc-secret token:' $secret
+	echo 'File Browser: initial Username: admin. Password: admin.'
 	echo '------------------------------------------------------'
 }
 
