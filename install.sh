@@ -4,6 +4,8 @@
 ### Author: Bojan Fu
 ### Date: 28-03-2021
 
+# bash <(curl -Lk https://raw.githubusercontent.com/earlSagrada/action-aria2-script/master/install.sh)
+
 # TODO: After restart:
 # caddy start
 # aria2c --conf-path=/etc/aria2/aria2.conf -D
@@ -47,10 +49,9 @@ function check_if_installed() {
 		echo 'File Browser will be installed from the latest version.'
 	fi
 	
-	echo ''------------------------------------------------------''
-	
-	if [ caddy_installed = 1 ] && [ aria2_installed -eq 1 ] && [ filebrowser_installed -eq 1 ]
-	then
+	echo '------------------------------------------------------'
+
+	if [[ caddy_installed -eq 1 && aria2_installed -eq 1 && filebrowser_installed -eq 1 ]] ; then
 		exit 1
 	fi
 	printf "\n"
