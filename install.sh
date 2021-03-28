@@ -55,7 +55,7 @@ function check_if_installed() {
 		exit 1
 	fi
 	printf "\n"
-	sleep 3
+	sleep 5
 }
 
 
@@ -70,7 +70,7 @@ function preparation() {
 		echo -e '\e[7mThis version of script is dependent on apt!'
 	fi
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
@@ -83,12 +83,12 @@ function install_caddy() {
 	sudo apt install caddy
 
 	cd ~
-	mkdir mysite
-	cd mysite
+	mkdir mysite/
+	cd mysite/
 	touch Caddyfile
-	mkdir src
+	mkdir src/
 	
-	read -p 'Please entre the domain name you have registered, whose A/AAAA record points to this IP address: ' domain_name
+	read -p 'Please entre the *domain name* you have registered, whose A/AAAA record points to this IP address: ' domain_name
 	read -p 'Please entre your email address for tls: ' email_address
 	echo 'http://'$domain_name '{
 	        redir https://'$domain_name'
@@ -105,9 +105,11 @@ function install_caddy() {
 	        encode zstd gzip
 	        reverse_proxy localhost:8080
 	}' >> Caddyfile
+	
+
 	echo 'Caddy has been installed successfully!'
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
@@ -115,9 +117,9 @@ function install_caddy() {
 function start_caddy() {
 	caddy stop
 	caddy start
-	echo 'Please wait for 20 seconds...'
+	echo 'Please wait for 30 seconds...'
 	printf "\n"
-	sleep 20
+	sleep 40
 }
 
 
@@ -128,7 +130,7 @@ function install_ariang() {
 	unzip AriaNg-1.2.1.zip -d src
 	echo 'AriaNg has been installed successfully!'
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
@@ -252,10 +254,10 @@ function install_aria2() {
 	# Find the TLS cert and key
 	cd $HOME/.local/share/caddy/certificates/
 
-	certpath=`find "$(pwd)" -name "*crt"`
-	echo 'certpath:' $certpath
+	certpath=`find "$(pwd)" -name "*crt" ! -name "*file*"`
+	echo 'certpath:' $certpath # returns 2 results, should use 'sinchansaysno.co' not 'file.*'
 	sed -i "s_rpc-certificate=_rpc-certificate=${certpath}_g" /etc/aria2/aria2.conf
-	keypath=`find "$(pwd)" -name "*key"`
+	keypath=`find "$(pwd)" -name "*key"  ! -name "*file*"`
 	echo 'keypath:' $keypath
 	sed -i "s_rpc-private-key=_rpc-private-key=${keypath}_g" /etc/aria2/aria2.conf
 
@@ -282,7 +284,7 @@ function set_free_ports() {
 	sudo ufw allow 6998/tcp
 	sudo ufw allow 51413/tcp
 	sudo ufw allow 8080/tcp
-	sleep 3
+	sleep 4
 }
 
 
@@ -292,7 +294,7 @@ function start_aria2c() {
 	aria2c --conf-path=/etc/aria2/aria2.conf -D # Check aria2 conf and run as daemon
 	echo 'Aria2 is now runnning as daemon...'
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
@@ -300,7 +302,6 @@ function start_aria2c() {
 function install_file_browser() {
 	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 	mkdir /root/Download/
-	#filebrowser -r /root/Download/
 
 	mkdir /etc/filebrowser/
 	cd /etc/filebrowser/
@@ -313,7 +314,6 @@ function install_file_browser() {
 	    "root":"/root/Download",
 	    "username":"admin"
 	}' > /etc/filebrowser/config.json
-	#nohup filebrowser -c /etc/filebrowser/config.json &
 
 
 	touch /lib/systemd/system/filebrowser.service
@@ -329,7 +329,7 @@ function install_file_browser() {
 	systemctl daemon-reload
 	echo 'File Browser has been installed successfully!'
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
@@ -339,7 +339,7 @@ function start_file_browser() {
 	systemctl enable filebrowser.service
 	systemctl start filebrowser.service
 	printf "\n"
-	sleep 3
+	sleep 4
 }
 
 
