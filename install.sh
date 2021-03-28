@@ -48,7 +48,8 @@ function check_if_installed() {
 	fi
 	
 	echo ''------------------------------------------------------''
-
+	echo $caddy_installed
+	
 	if [ caddy_installed -eq 1 ] && [ aria2_installed -eq 1 ] && [ filebrowser_installed -eq 1 ]
 	then
 		exit 1
