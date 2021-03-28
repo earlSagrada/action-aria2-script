@@ -101,7 +101,7 @@ function install_caddy() {
 	}
 
 	https://file.'$domain_name' {
-	        tls 'email_address'
+	        tls '$email_address'
 	        encode zstd gzip
 	        reverse_proxy localhost:8080
 	}' >> Caddyfile
@@ -135,7 +135,7 @@ function install_ariang() {
 # Install aria2
 function install_aria2() {
 
-	sudo apt install aria2
+	sudo apt install aria2 -y
 	mkdir /etc/aria2
 	touch /etc/aria2/aria2.session
 	touch /etc/aria2/aria2.conf
@@ -250,7 +250,7 @@ function install_aria2() {
 	rm aria2_1.conf
 
 	# Find the TLS cert and key
-	cd $HOME/.local/share/caddy/certificates
+	cd $HOME/.local/share/caddy/certificates/
 
 	certpath=`find "$(pwd)" -name "*crt"`
 	echo 'certpath:' $certpath
@@ -281,6 +281,7 @@ function set_free_ports() {
 	sudo ufw allow 6800/tcp
 	sudo ufw allow 6998/tcp
 	sudo ufw allow 51413/tcp
+	sudo ufw allow 8080/tcp
 	sleep 3
 }
 
@@ -297,7 +298,7 @@ function start_aria2c() {
 
 # Install File Browser
 function install_file_browser() {
-	curl -fsSL https://filebrowser.org/get.sh | bash
+	curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash
 	mkdir /root/Download/
 	#filebrowser -r /root/Download/
 
