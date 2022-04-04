@@ -14,7 +14,9 @@ Use this line of command to execute the script:
 ```
 bash <(curl -Lk https://raw.githubusercontent.com/earlSagrada/action-aria2-script/master/install.sh)
 ```
-You'll be asked to entre your domain name and `rpc-secret` token.
+You'll be asked to entre:
+* your domain name and
+* `rpc-secret` token
 
 ## System Requirements
 NOTE: This is a newly developed script especially for **Ubuntu 20.10 x64** VPS machine. Further adaptation will be added for other environment and usage scenario.
@@ -22,4 +24,4 @@ NOTE: This is a newly developed script especially for **Ubuntu 20.10 x64** VPS m
 ## Features
 * This script assumes you have a VPS and a domain name pointing to the IP address of the VPS. The script will ask for the domain name and write into `~/mysite/Caddyfile`. Caddy will then automatically get a certification and a key for you, which will be stored in `$HOME/.local/share/caddy/certificates/`. The `.crt` and `.key` will be searched and filled into `/etc/aria2/aria2.conf`, which will enable you to access aria2 through HTTPS.
 
-* The latest File Browser version is v2.14.1, which is capable of playing `mp4` video online and auto-detect and use `.vtt` subtitle in the same folder.
+* The latest File Browser version is v2.21.1, which is capable of playing `mp4` video online and auto-detect and use `.vtt` subtitle in the same folder.
