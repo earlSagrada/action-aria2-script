@@ -27,3 +27,10 @@ NOTE: This is a newly developed script especially for **Ubuntu 20.10 x64** VPS m
 * The latest File Browser version is v2.21.1, which is capable of playing `mp4` video online and auto-detect and use `.vtt` subtitle in the same folder.
 
 * You also need to add a "file" subdomain to your domain name and make sure you can ping it.
+
+## Notes
+* In case you forget the **File Browser** usernamd or password, delete the database and then restart the service:
+```
+rm /etc/filebrowser/filebrowser.db
+systemctl restart filebrowser.service
+```
