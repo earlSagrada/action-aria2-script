@@ -88,7 +88,7 @@ function install_caddy() {
 	touch Caddyfile
 	mkdir src/
 	
-	read -p 'Please entre the *domain name* you have registered, whose A/AAAA record points to this IP address: ' domain_name
+	read -p 'Please entre the *domain name* you have registered, whose A/AAAA record points to this IP address (e.g.: bbc.com): ' domain_name
 	read -p 'Please entre your email address for tls: ' email_address
 	echo 'http://'$domain_name '{
 	        redir https://'$domain_name'
@@ -115,6 +115,9 @@ function install_caddy() {
 
 # Start Caddy
 function start_caddy() {
+	iptables -A INPUT -ptcp --dport 80 -j ACCEPT
+	iptables -A INPUT -ptcp --dport 443 -j ACCEPT
+	iptables -A INPUT -ptcp --dport 8080 -j ACCEPT
 	caddy stop
 	caddy start
 	echo 'Please wait for 30 seconds...'
@@ -126,8 +129,8 @@ function start_caddy() {
 # Install AriaNg
 function install_ariang() {
 	cd ~/mysite/
-	wget https://github.com/mayswind/AriaNg/releases/download/1.2.4/AriaNg-1.2.4.zip
-	unzip AriaNg-1.2.4.zip -d src
+	wget https://github.com/mayswind/AriaNg/releases/download/1.3.2/AriaNg-1.3.2.zip
+	unzip AriaNg-1.3.2.zip -d src
 	echo 'AriaNg has been installed successfully!'
 	printf "\n"
 	sleep 4
