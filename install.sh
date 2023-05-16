@@ -129,8 +129,8 @@ function start_caddy() {
 # Install AriaNg
 function install_ariang() {
 	cd ~/mysite/
-	wget https://github.com/mayswind/AriaNg/releases/download/1.3.2/AriaNg-1.3.2.zip
-	unzip AriaNg-1.3.2.zip -d src
+	wget https://github.com/mayswind/AriaNg/releases/download/1.3.6/AriaNg-1.3.6.zip
+	unzip AriaNg-1.3.6.zip -d src
 	echo 'AriaNg has been installed successfully!'
 	printf "\n"
 	sleep 4
