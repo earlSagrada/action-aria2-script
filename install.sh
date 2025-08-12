@@ -267,7 +267,7 @@ function install_aria2() {
 	sed -i "s_rpc-private-key=_rpc-private-key=${keypath}_g" /etc/aria2/aria2.conf
 
 	cd ~
-	wget -O /tmp/trackers_best.txt https://api.xiaoz.org/trackerslist/
+	wget -O /tmp/trackers_best.txt https://raw.githubusercontent.com/ngosang/trackerslist/refs/heads/master/trackers_all.txt
 	tracker=$(cat /tmp/trackers_best.txt)
 	tracker="bt-tracker="${tracker}
 	echo $tracker >> /etc/aria2/aria2.conf
