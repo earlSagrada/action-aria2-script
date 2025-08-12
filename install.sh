@@ -130,37 +130,14 @@ function start_caddy() {
 
 # Install AriaNg
 function install_ariang() {
-  set -euo pipefail
-  cd "$HOME/mysite"
-
-  mkdir -p src
-
-  # Ask GitHub for latest release; add headers to avoid weird responses
-  json=$(curl -sSL \
-    -H "Accept: application/vnd.github+json" \
-    -H "User-Agent: curl" \
-    https://api.github.com/repos/mayswind/AriaNg/releases/latest)
-
-  # Pick the AriaNg-*.zip asset (exclude "Source code (zip)")
-  url=$(printf '%s' "$json" \
-    | grep -oE '"browser_download_url":\s*"[^"]+AriaNg-[^"]+\.zip"' \
-    | head -n1 \
-    | cut -d '"' -f4)
-
-  if [ -z "${url:-}" ]; then
-    echo "Failed to find download URL. Maybe API rate limit? Try again later or set GITHUB_TOKEN."
-    return 1
-  fi
-
-  filename=$(basename "$url")
-  rm -f "$filename"
-  wget -q --show-progress "$url"
-
-  # Unzip (overwrite if exists)
-  unzip -o "$filename" -d src
-
-  echo "AriaNg has been installed successfully!"
+	cd ~/mysite/
+	wget https://github.com/mayswind/AriaNg/releases/download/1.3.11/AriaNg-1.3.11.zip
+	unzip AriaNg-1.3.11.zip -d src
+	echo 'AriaNg has been installed successfully!'
+	printf "\n"
+	sleep 4
 }
+
 
 # Install aria2
 function install_aria2() {
