@@ -79,6 +79,8 @@ function install_caddy() {
 	sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
 	curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 	curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+ 	chmod o+r /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+	chmod o+r /etc/apt/sources.list.d/caddy-stable.list
 	sudo apt update
 	sudo apt install caddy
 
@@ -129,8 +131,20 @@ function start_caddy() {
 # Install AriaNg
 function install_ariang() {
 	cd ~/mysite/
-	wget https://github.com/mayswind/AriaNg/releases/download/1.3.6/AriaNg-1.3.6.zip
-	unzip AriaNg-1.3.6.zip -d src
+	# Get the latest release zip URL from GitHub API
+	url=$(curl -s https://api.github.com/repos/mayswind/AriaNg/releases/latest \
+	  | grep "browser_download_url.*zip" \
+	  | cut -d '"' -f 4)
+	
+	# Download
+	wget "$url"
+	
+	# Extract filename from URL
+	filename=$(basename "$url")
+	
+	# Unzip
+	unzip "$filename" -d src
+ 
 	echo 'AriaNg has been installed successfully!'
 	printf "\n"
 	sleep 4
