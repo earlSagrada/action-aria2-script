@@ -376,7 +376,10 @@ install_file_browser
 start_file_browser
 report_installation
 
-
+###
+# to see filebrowser pwd:
+# sudo journalctl -u filebrowser.service -b | grep -i password
+###
 
 #filebrowser config init
 #cd /etc/filebrowser/
